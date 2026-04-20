@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Terminal — The Dispatch</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="site-title">THE DISPATCH</a>
+      <nav class="site-nav">
+        <a href="terminal.html" class="nav-btn">Enter Terminal</a>
+        <a href="about.html" class="nav-link">About</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+        <a href="join.html" class="nav-link join-link">Join</a>
+      </nav>
+      <button class="hamburger" id="hamburger">&#9776;</button>
+    </div>
+    <div class="mobile-nav" id="mobileNav">
+      <a href="terminal.html" class="nav-btn">Enter Terminal</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="join.html">Join</a>
+    </div>
+  </header>
+
+  <main>
+    <div class="terminal-wrap fade-in">
+      <h1 style="font-family:'Playfair Display',serif; margin-bottom:28px; font-size:2rem;">Terminal</h1>
+      <div class="terminal-box">
+        <div class="terminal-topbar">
+          <div class="t-dot red"></div>
+          <div class="t-dot yellow"></div>
+          <div class="t-dot green"></div>
+          <span class="terminal-title">dispatch — bash</span>
+        </div>
+        <div class="terminal-body" id="terminalBody">
+          <div class="terminal-line"><span class="prompt">dispatch@blog</span> <span class="cmd">~</span> % <span id="typedText"></span><span class="cursor"></span></div>
+          <div id="terminalOutput"></div>
+        </div>
+      </div>
+      <p style="font-size:0.82rem; color:var(--muted); margin-top:16px;">This is a visual terminal. Customise the content inside <code>terminal.html</code>.</p>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p>&copy; 2026 The Dispatch. All rights reserved.</p>
+  </footer>
+
+  <script src="main.js"></script>
+  <script>
+    // Typewriter effect
+    const lines = [
+      { cmd: 'ls posts/', output: 'post-one.md  post-two.md  post-three.md  post-four.md' },
+      { cmd: 'cat welcome.txt', output: 'Welcome to The Dispatch terminal. Customise this page as you like.' },
+    ];
+    let lineIndex = 0;
+    let charIndex = 0;
+    const typedText = document.getElementById('typedText');
+    const outputEl  = document.getElementById('terminalOutput');
+
+    function typeNextLine() {
+      if (lineIndex >= lines.length) return;
+      const line = lines[lineIndex];
+      if (charIndex < line.cmd.length) {
+        typedText.textContent += line.cmd[charIndex++];
+        setTimeout(typeNextLine, 55);
+      } else {
+        setTimeout(() => {
+          const out = document.createElement('div');
+          out.className = 'terminal-line output';
+          out.textContent = line.output;
+          outputEl.appendChild(out);
+          const next = document.createElement('div');
+          next.className = 'terminal-line';
+          next.innerHTML = '<span class="prompt">dispatch@blog</span> <span class="cmd">~</span> % <span id="typedText"></span><span class="cursor"></span>';
+          outputEl.appendChild(next);
+          window.typedText = next.querySelector('#typedText') || next;
+          lineIndex++; charIndex = 0;
+          setTimeout(typeNextLine, 400);
+        }, 500);
+      }
+    }
+    setTimeout(typeNextLine, 900);
+  </script>
+</body>
+</html>
